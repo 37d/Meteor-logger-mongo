@@ -34,7 +34,7 @@ npm-mongo@2.2.24
 observe-sequence@1.0.16
 ordered-dict@1.0.9
 ostrio:logger@2.0.2
-ostrio:loggermongo@2.0.0
+ostrio:loggermongo@2.0.1
 promise@0.8.8
 random@1.0.10
 reactive-var@1.0.11

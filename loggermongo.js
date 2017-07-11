@@ -3,19 +3,22 @@ import { Mongo }        from 'meteor/mongo';
 import { Meteor }       from 'meteor/meteor';
 import { Logger }       from 'meteor/ostrio:logger';
 import { check, Match } from 'meteor/check';
-const NOOP = () => {};
+const NOOP = () => {
+};
 
 /*
  * @class LoggerMongo
  * @summary MongoDB adapter for ostrio:logger (Logger)
  */
 class LoggerMongo {
-  constructor(logger, options = {}) {
+  constructor (logger, options = {}) {
     check(logger, Match.OneOf(Logger, Object));
     check(options, {
       collectionName: Match.Optional(String),
-      collection: Match.Optional(Match.OneOf(Mongo.Collection, Object)),
-      format: Match.Optional(Function)
+      //collection: Match.Optional(Match.OneOf(Mongo.Collection, Object, Function)),
+      //TODO: this was causing issues when using a remote mongo connection
+      collection:     Match.Any,
+      format:         Match.Optional(Function)
     });
 
     this.logger  = logger;
@@ -61,11 +64,11 @@ class LoggerMongo {
         }
 
         const record = this.options.format({
-          userId: userId,
-          date: time,
-          timestamp: +time,
-          level: level,
-          message: message,
+          userId:     userId,
+          date:       time,
+          timestamp:  +time,
+          level:      level,
+          message:    message,
           additional: data,
         });
 
@@ -78,7 +81,7 @@ class LoggerMongo {
     }, NOOP, false, false);
   }
 
-  enable(rule = {}) {
+  enable (rule = {}) {
     check(rule, {
       enable: Match.Optional(Boolean),
       client: Match.Optional(Boolean),
